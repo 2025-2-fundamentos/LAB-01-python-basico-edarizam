@@ -27,3 +27,38 @@ def pregunta_08():
      (9, ['A', 'B', 'C', 'E'])]
 
     """
+
+    archivo_csv = 'files/input/data.csv'
+    DELIMITADOR = '\t' # Asumimos la coma como separador
+
+    # Lista para almacenar todos los datos procesados
+    datos = []
+
+    # Abre el archivo para lectura ('r')
+    with open(archivo_csv, mode='r') as archivo:
+        
+        # 2. Iterar sobre el objeto 'archivo' (que itera línea por línea)
+        info = {}
+        for linea in archivo:
+            # Elimina espacios en blanco y saltos de línea al principio/final
+            linea_limpia = linea.strip() 
+            
+            if linea_limpia: # Asegúrate de que la línea no esté vacía
+                
+                # 3. Divide la línea en una lista de valores usando el delimitador
+                # La fila será una lista de cadenas, igual que con csv.reader
+                fila = linea_limpia.split(DELIMITADOR)
+                
+                # 4. Procesar o almacenar la fila
+                letra = fila[0]
+                num = int(fila[1])
+
+                if num not in info:
+                    info[num] = set()
+                
+                info[num].add(letra)
+        
+        for key, value in info.items():
+            datos.append((key, sorted(list(value))))
+        
+    return sorted(datos, key = lambda x: x[0])
